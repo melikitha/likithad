@@ -2,27 +2,26 @@ import React from 'react';
 import ReactDom from 'react-dom/client';
 import {useParams} from 'react-router-dom';
 import json from '../models/webdevtest-data.json';
-
+import convertDateFormat from '../format/FormatDate';
 const Promo = () => {
-
-  let {promo_no} = useParams();
+  let {promo_no} = useParams ();
   let data = json.promotion_objects[promo_no];
-  let drawings = data.drawings.map ((data, i) => {
+  console.log (data.drawings);
+  let drawings = data.drawings.map (data => {
     return (
       <tr>
         <td>
           <p>{data.prize}</p>
         </td>
         <td>
-          <p>{data.entry_deadline}</p>
+          <p>{convertDateFormat (data.entry_deadline)}</p>
         </td>
         <td>
-          <p>{data.drawing_date}</p>
+          <p>{convertDateFormat (data.drawing_date)}</p>
         </td>
       </tr>
     );
   });
-
   let entries = data.entries.map ((data, i) => {
     return (
       <tr>
@@ -30,7 +29,7 @@ const Promo = () => {
           <p>{data.entry_number}</p>
         </td>
         <td>
-          <p>{data.date}</p>
+          <p>{convertDateFormat (data.date)}</p>
         </td>
       </tr>
     );
@@ -38,51 +37,67 @@ const Promo = () => {
   return (
     <section className="promo01">
       <div class="container">
-        <img class="rounded mx-auto d-block" src={"../"+ json.promotion_objects[promo_no].promo_image_url} />
-        <p class="text-grey mb-0 mt-4">
+        <h1 class="text-danger text-center mt-5">
+          The Next Entry Deadline is Wednesday, October 22, 2015!
+        </h1>
+        <img
+          class="rounded  mt-5 img-shadow"
+          src={'../' + json.promotion_objects[promo_no].promo_image_url}
+          id="image"
+        />
+
+        <p class="text-grey mb-0 mt-4" id="none">
           <strong>{json.promotion_objects[promo_no].promotion_name}</strong>
         </p>
-        <small class="text-secondary">{json.promotion_objects[promo_no].summary}</small>
+        <p class="text-secondary ch_margin">
+          <small>
+            {json.promotion_objects[promo_no].summary}
+          </small>
+        </p>
       </div>
       <div class="container text-center mt-4">
         <p>
           <strong>Drwing Schedule</strong>
         </p>
-        <table class="table table-secondary table-bordered border-white">
+        <table>
           <thead class="table-active">
-            <td>
-              <p>PROZE</p>
-            </td>
-            <td>
+            <th>
+              <p>PRIZE</p>
+            </th>
+            <th>
               <p>ENTRY DEADLINE</p>
-            </td>
-            <td>
+            </th>
+            <th>
               <p>DRAWING DATE</p>
-            </td>
+            </th>
           </thead>
-          <tbody>{drawings}</tbody>
-
+          <tbody id="draw">
+            {drawings}
+          </tbody>
         </table>
-        <p class="text-muted text-left">{json.promotion_objects[promo_no].entry_info}</p>
+        <p class="text-muted text-left">
+          {json.promotion_objects[promo_no].entry_info}
+        </p>
       </div>
       <div class="container text-center mt-4">
         <p class="mb-1">
           <strong>Your Total Tickets Entered: 2</strong>
         </p>
-        <small class="text-muted ">
+        <small class="text-muted" id="change_color">
           All entries are locked in at the time they are submitted and cannot be
           deleted
         </small>
-        <table class="table table-secondary table-bordered border-white">
+
+        <table>
           <thead class="table-active">
-            <td>
+            <th>
               <p>ENTRY NUMBER</p>
-            </td>
-            <td>
+            </th>
+            <th>
               <p>DATE</p>
-            </td>
+            </th>
           </thead>
-          <tbody>
+          <tbody class="entry">
             {entries}
           </tbody>
         </table>
